@@ -46,7 +46,7 @@ export function EmptyState({
 }
 
 export function ErrorState({
-  title = 'Simulation Error',
+  title = 'Something went wrong',
   message = 'Failed to synchronize with learning state. Please try again.',
   onRetry,
   className = '',
