@@ -64,17 +64,23 @@ export function RoadmapNode({ node, index, isLast = false }) {
               <div className="flex items-center gap-2">
                 <span className="text-xs font-mono text-slate-400">Step {index + 1}</span>
                 <Badge
-                  variant={
+                    variant={
                     isCompleted
-                      ? 'emerald'
-                      : isInProgress
-                      ? 'indigo'
-                      : 'slate'
-                  }
-                  size="sm"
-                >
-                  {node.badge || node.category}
-                </Badge>
+                    ? 'emerald'
+                    : isInProgress
+                    ? 'indigo'
+                     : 'slate'
+                      }
+  size="sm"
+>
+  {node.badge || node.category}
+</Badge>
+
+{node.adaptivePriority === 'high' && (
+  <span className="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide bg-rose-500/10 text-rose-400 border border-rose-500/30">
+    High Priority
+  </span>
+)}
               </div>
 
               <div className="flex items-center gap-3 text-xs text-slate-400">
@@ -99,6 +105,15 @@ export function RoadmapNode({ node, index, isLast = false }) {
                 {node.whyThisStep}
               </div>
             </div>
+                {node.diagnosticGap && (
+            <div className="mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-xs text-rose-200 flex items-start gap-2">
+              <ShieldAlert className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+              <div>
+                <strong className="text-rose-300">Diagnostic Gap: </strong>
+                {node.adaptiveReason}
+              </div>
+            </div>
+            )}
 
             {/* Mastery & Action */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1 border-t border-slate-800/60">
