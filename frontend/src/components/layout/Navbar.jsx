@@ -88,7 +88,7 @@ export function Navbar() {
                   Sign In
                 </Button>
               </Link>
-              <Link to="/signup">
+              <Link to="/signup" className="hidden sm:block">
                 <Button variant="primary" size="sm" rightIcon={ChevronRight}>
                   Get Started Free
                 </Button>
