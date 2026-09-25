@@ -27,6 +27,7 @@ export function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setEmailError('')
     if (!email.includes('@')) {
   setEmailError('Please enter a valid email address.')
   return
@@ -60,7 +61,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-[75vh] flex items-center justify-center py-12 px-4">
+   <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-2">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-cyan-400 p-[1px] mx-auto shadow-xl shadow-indigo-500/20">
@@ -68,13 +69,13 @@ export function LoginPage() {
               <Compass className="w-6 h-6 text-indigo-400" />
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-white tracking-tight">Sign in to NEXSTEP</h2>
+   <h2 className="text-2xl font-bold text-white tracking-tight">Welcome back</h2>
           <p className="text-xs text-slate-400">
             Access your personalized learning roadmap & neural diagnostics
           </p>
         </div>
 
-        <Card className="border-slate-800 bg-slate-900/90 shadow-2xl p-6">
+        <Card className="border-slate-700/60 bg-slate-900/95 shadow-2xl shadow-black/30 p-6 sm:p-8">
           {error && (
             <div className="mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
@@ -95,7 +96,7 @@ export function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                  className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-[12px] sm:text-sm  text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 />
                 {emailError && (
                 <p className="mt-1.5 text-xs text-rose-400">
@@ -144,6 +145,7 @@ export function LoginPage() {
               type="submit"
               variant="primary"
               size="md"
+              rightIcon={ArrowRight}
               isLoading={isLoading}
               className="w-full font-semibold"
             >
