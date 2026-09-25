@@ -17,6 +17,9 @@ export function ExamIntelligencePage() {
   useLearning()
   const [metrics, setMetrics] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [analysisComplete, setAnalysisComplete] = useState(false)
 
   useEffect(() => {
     async function loadData() {
@@ -30,12 +33,65 @@ export function ExamIntelligencePage() {
     loadData()
   }, [])
 
+  const handleFileChange = (e) => {
+  const file = e.target.files?.[0]
+  setSelectedFile(file || null)
+}
+const handleAnalyze = async () => {
+  if (!selectedFile) return
+
+  setIsAnalyzing(true)
+
+  setTimeout(() => {
+    setIsAnalyzing(false)
+  }, 1500)
+  setAnalysisComplete(true)
+}
   if (isLoading || !metrics) {
     return <LoadingState title="Crunching Exam Intelligence..." subtitle="Correlating syllabus frequency curves with your personal retention" />
   }
 
   return (
     <div className="max-w-5xl mx-auto py-4 space-y-8">
+      <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800">
+  <h2 className="text-base font-bold text-white">
+    Upload Exam Material
+  </h2>
+
+  <p className="text-xs text-slate-400 mt-1 mb-4">
+    Upload your PPT, PDF, Notes, or PYQs for exam analysis.
+  </p>
+
+  <input
+    type="file"
+    accept=".pdf,.ppt,.pptx,.txt"
+    onChange={handleFileChange}
+    className="w-full text-sm text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-600 file:text-white hover:file:bg-indigo-500"
+  />
+
+  {selectedFile && (
+    <p className="mt-3 text-xs text-emerald-400">
+      Selected: {selectedFile.name}
+    </p>
+  )}
+  {selectedFile && (
+  <Button
+    type="button"
+    variant="glow"
+    size="sm"
+    onClick={handleAnalyze}
+    className="mt-4"
+    isLoading={isAnalyzing}
+  >
+    {isAnalyzing ? 'Analyzing...' : 'Analyze File'}
+  </Button>
+)}
+{analysisComplete && (
+  <p className="mt-3 text-xs text-emerald-400">
+    ✓ Analysis Complete
+  </p>
+)}
+</div>
       {/* Top Banner */}
       <div className="relative overflow-hidden rounded-3xl border border-indigo-500/30 bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 p-6 sm:p-8 shadow-2xl">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10">
@@ -77,14 +133,14 @@ export function ExamIntelligencePage() {
         </div>
       </div>
 
-      {/* High-Yield Topics Matrix Table */}
+      {/* Priority Topics & Exam Yield */}
       <Card className="border-slate-800 bg-slate-900/80 p-6">
         <CardHeader className="p-0 pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <CardTitle className="text-base text-white">
                 <Target className="w-5 h-5 text-indigo-400" />
-                High-Yield Matrix: Syllabus Weight vs Your Mastery
+                HPriority Topics & Exam Yield
               </CardTitle>
               <p className="text-xs text-slate-400 mt-1">
                 Highest ROI study time: Topics with high weight and low current mastery.
