@@ -5,9 +5,10 @@ import { RoadmapGraph } from '../components/roadmap/RoadmapGraph'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
 import { useLearning } from '../context/LearningContext'
+import { apiService } from '../services/api'
 
 export function RoadmapPage() {
-  const { roadmap, user, showNotification } = useLearning()
+  const { roadmap, user, showNotification, setRoadmap } = useLearning()
   const [filter, setFilter] = useState('all')
 
   const filteredNodes = roadmap.filter((node) => {
@@ -16,9 +17,19 @@ export function RoadmapPage() {
     return true
   })
 
-  const handleRecalibrate = () => {
-    showNotification('NEXSTEP Neural Engine recalibrated roadmap weights based on your latest retention metrics.')
+  const handleRecalibrate = async () => {
+  try {
+    const result = await apiService.getAssessmentResult()
+    const updatedRoadmap = await apiService.recalibrateRoadmap(
+      result.answers || {}
+    )
+    setRoadmap(updatedRoadmap)
+    showNotification('NEXSTEP Neural Engine recalibrated your roadmap.')
+  } catch (error) {
+    console.error('Failed to recalibrate roadmap', error)
+    showNotification('Failed to recalibrate roadmap. Please try again.')
   }
+}
 
   return (
     <div className="max-w-4xl mx-auto py-4 space-y-6">

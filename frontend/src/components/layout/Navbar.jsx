@@ -15,6 +15,7 @@ import {
   ChevronRight,
 } from 'lucide-react'
 import { useLearning } from '../../context/LearningContext'
+import { Badge } from '../ui/Badge'
 import { Button } from '../ui/Button'
 
 export function Navbar() {

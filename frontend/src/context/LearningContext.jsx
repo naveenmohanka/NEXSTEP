@@ -12,13 +12,16 @@ export function LearningProvider({ children }) {
   const [toastMessage, setToastMessage] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
+    useEffect(() => {
     async function loadInitialData() {
       try {
         const u = await apiService.getCurrentUser()
         const r = await apiService.getRoadmap()
+        const a = await apiService.getAssessmentResult()
+
         setUser(u)
         setRoadmap(r)
+        setAssessmentResult(a)
       } catch (err) {
         console.error('Failed to load initial context', err)
       }
@@ -49,6 +52,11 @@ export function LearningProvider({ children }) {
 
   const recordDiagnosticCompletion = (result) => {
     setAssessmentResult(result)
+
+    if (result.roadmap) {
+      setRoadmap(result.roadmap)
+    }
+
     showNotification('Diagnostic Analyzed! Personalized Roadmap has been calibrated.')
   }
 

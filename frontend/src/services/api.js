@@ -86,13 +86,73 @@ export const apiService = {
       score: scorePercentage,
       correctCount,
       totalQuestions: DIAGNOSTIC_QUESTIONS.length,
+      answers,
       aiInsight:
         scorePercentage >= 75
           ? 'Exceptional grasp of core invariants! NEXSTEP recommends skipping elementary recursions and jumping straight into tree optimization and graph dependency graphs.'
           : 'Detected foundational gaps in recursion frame lifecycles and space bounds. NEXSTEP has structured your personalized roadmap to solidify tree traversals before tackling complex graphs.',
     }
+    const roadmap = await this.recalibrateRoadmap(answers)
+    result.roadmap = roadmap
+
     localStorage.setItem(STORAGE_KEYS.ASSESSMENT, JSON.stringify(result))
     return result
+    },
+
+  async recalibrateRoadmap(answers) {
+    await delay(400)
+
+    const currentRoadmap = await this.getRoadmap()
+
+    const topicMap = {
+      diag_1: 'node-2',
+      diag_2: 'node-3',
+      diag_4: 'node-4',
+    }
+
+    const updatedRoadmap = currentRoadmap.map((node) => {
+      const questionId = Object.keys(topicMap).find(
+        (key) => topicMap[key] === node.id
+      )
+
+      if (!questionId) {
+        return node
+      }
+
+      const question = DIAGNOSTIC_QUESTIONS.find(
+        (q) => q.id === questionId
+      )
+
+      const selected = answers[questionId]
+      const correctOpt = question?.options.find(
+        (opt) => opt.isCorrect
+      )?.id
+
+      const isCorrect = selected === correctOpt
+
+      return {
+        ...node,
+        diagnosticScore: isCorrect ? 100 : 0,
+        diagnosticGap: !isCorrect,
+        adaptivePriority: isCorrect ? 'normal' : 'high',
+        adaptiveReason: isCorrect
+          ? 'Diagnostic indicates a strong foundation in this area.'
+          : 'Diagnostic identified a gap in this area. Additional practice is recommended.',
+      }
+    })
+
+    localStorage.setItem(
+      STORAGE_KEYS.ROADMAP,
+      JSON.stringify(updatedRoadmap)
+    )
+
+    return updatedRoadmap
+  },
+
+  async getAssessmentResult() {
+    await delay(150)
+    const stored = localStorage.getItem(STORAGE_KEYS.ASSESSMENT)
+    return stored ? JSON.parse(stored) : INITIAL_ASSESSMENT_RESULT
   },
 
   // Roadmap & Progression
