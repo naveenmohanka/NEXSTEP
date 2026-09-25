@@ -36,7 +36,7 @@ export function AIExplanationModal({
                   NEXSTEP Cognitive Recovery
                 </Badge>
                 <h3 className="text-lg font-bold text-white mt-1">
-                  Adaptive AI Explanation
+               {problemTitle || 'Adaptive AI Explanation'}
                 </h3>
               </div>
             </div>
@@ -44,6 +44,7 @@ export function AIExplanationModal({
             <button
               type="button"
               onClick={onClose}
+              aria-label="Close AI explanation"
               className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
             >
               <X className="w-5 h-5" />
