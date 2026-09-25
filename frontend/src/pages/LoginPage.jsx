@@ -23,9 +23,14 @@ export function LoginPage() {
   const [password, setPassword] = useState('password123')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [emailError, setEmailError] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!email.includes('@')) {
+  setEmailError('Please enter a valid email address.')
+  return
+}
     setIsLoading(true)
     setError(null)
     try {
@@ -85,13 +90,18 @@ export function LoginPage() {
               <div className="relative">
                 <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
                 <input
-                  type="email"
+                  type="text"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 />
+                {emailError && (
+                <p className="mt-1.5 text-xs text-rose-400">
+                {emailError}
+                </p>
+          )}
               </div>
             </div>
 
